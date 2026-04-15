@@ -1,0 +1,551 @@
+/* ── RESET & BASE ────────────────────────────────── */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background-color: #f8f9fa;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* ── NAVBAR ──────────────────────────────────────── */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 5%;
+  background: #fff;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 1.4rem;
+  color: #2563eb;
+}
+
+.nav-logo i {
+  font-size: 1.5rem;
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2rem;
+}
+
+.nav-links a {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: #555;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: #2563eb;
+}
+
+/* ── HERO ────────────────────────────────────────── */
+.hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5rem 5%;
+  background: linear-gradient(135deg, #eff6ff, #fff);
+  min-height: 90vh;
+  gap: 2rem;
+}
+
+.hero-content {
+  flex: 1;
+  max-width: 550px;
+}
+
+.hero-content h1 {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #1e293b;
+  margin-bottom: 1.2rem;
+}
+
+.hero-content h1 span {
+  color: #2563eb;
+}
+
+.hero-content p {
+  font-size: 1.1rem;
+  color: #64748b;
+  margin-bottom: 2rem;
+  line-height: 1.7;
+}
+
+.hero-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+.hero-image img {
+  width: 100%;
+  max-width: 500px;
+  border-radius: 20px;
+  object-fit: cover;
+  box-shadow: 0 20px 60px rgba(37,99,235,0.15);
+}
+
+/* ── BOUTONS ─────────────────────────────────────── */
+.hero-buttons {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0.85rem 1.8rem;
+  border-radius: 50px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.3s;
+  cursor: pointer;
+  border: none;
+}
+
+.btn-primary {
+  background: #2563eb;
+  color: #fff;
+}
+
+.btn-primary:hover {
+  background: #1d4ed8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(37,99,235,0.35);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: #2563eb;
+  border: 2px solid #2563eb;
+}
+
+.btn-secondary:hover {
+  background: #2563eb;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* ── STATS ───────────────────────────────────────── */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1.5rem;
+  padding: 4rem 5%;
+  background: #fff;
+}
+
+.stat-card {
+  text-align: center;
+  padding: 2rem 1rem;
+  border-radius: 16px;
+  background: #f8faff;
+  border: 1px solid #e0eaff;
+  transition: transform 0.3s;
+}
+
+.stat-card:hover {
+  transform: translateY(-5px);
+}
+
+.stat-card i {
+  font-size: 2rem;
+  color: #2563eb;
+  margin-bottom: 0.8rem;
+}
+
+.stat-card h3 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.stat-card p {
+  font-size: 0.9rem;
+  color: #64748b;
+  margin-top: 0.3rem;
+}
+
+/* ── CARDS (véhicules & hôtels) ──────────────────── */
+.page-header {
+  text-align: center;
+  padding: 4rem 5% 2rem;
+}
+
+.page-header h1 {
+  font-size: 2.2rem;
+  color: #1e293b;
+  margin-bottom: 0.5rem;
+}
+
+.page-header p {
+  color: #64748b;
+  font-size: 1rem;
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1.8rem;
+  padding: 2rem 5% 4rem;
+}
+
+.card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+}
+
+.card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.card-body {
+  padding: 1.2rem;
+}
+
+.card-body h3 {
+  font-size: 1.1rem;
+  color: #1e293b;
+  margin-bottom: 0.4rem;
+}
+
+.card-badge {
+  display: inline-block;
+  background: #eff6ff;
+  color: #2563eb;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: 50px;
+  margin-bottom: 0.8rem;
+}
+
+.card-price {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-bottom: 1rem;
+}
+
+.card-price span {
+  font-size: 0.8rem;
+  font-weight: 400;
+  color: #64748b;
+}
+
+.card-info {
+  display: flex;
+  gap: 1rem;
+  font-size: 0.85rem;
+  color: #64748b;
+  margin-bottom: 1rem;
+}
+
+.card-info i {
+  color: #2563eb;
+}
+
+/* ── FOOTER ──────────────────────────────────────── */
+.footer {
+  text-align: center;
+  padding: 2rem;
+  background: #1e293b;
+  color: #94a3b8;
+  font-size: 0.9rem;
+}
+
+/* ── FORMULAIRE RÉSERVATION ──────────────────────── */
+.reservation-form {
+  background: #fff;
+  border-radius: 16px;
+  padding: 2rem;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  max-width: 500px;
+  margin: 2rem auto 4rem;
+}
+
+.reservation-form h2 {
+  font-size: 1.3rem;
+  color: #1e293b;
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 0.4rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: 'Poppins', sans-serif;
+  transition: border-color 0.3s;
+  outline: none;
+}
+
+.form-group input:focus {
+  border-color: #2563eb;
+}
+
+/* ── RÉSUMÉ RÉSERVATION ──────────────────────────── */
+.item-resume {
+  margin-bottom: 1.5rem;
+}
+
+.resume-card {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  background: #eff6ff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-bottom: 1.5rem;
+}
+
+.resume-card i {
+  font-size: 2rem;
+  color: #2563eb;
+}
+
+.resume-type {
+  font-size: 0.8rem;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.resume-nom {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.resume-prix {
+  font-size: 0.95rem;
+  color: #2563eb;
+  font-weight: 500;
+}
+
+.total-box {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #f0fdf4;
+  border: 1.5px solid #bbf7d0;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #166534;
+}
+
+.total-box strong {
+  font-size: 1.1rem;
+}
+
+/* ─── ADMIN ─────────────────────────────────── */
+.admin-tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.tab-btn {
+  padding: 0.6rem 1.2rem;
+  border: 2px solid #3b82f6;
+  background: white;
+  color: #3b82f6;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.tab-btn.active, .tab-btn:hover {
+  background: #3b82f6;
+  color: white;
+}
+
+.admin-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+}
+
+.admin-table th {
+  background: #3b82f6;
+  color: white;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font-weight: 600;
+}
+
+.admin-table td {
+  padding: 0.8rem 1rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-table tr:last-child td {
+  border-bottom: none;
+}
+
+.admin-table tr:hover td {
+  background: #f8faff;
+}
+
+.statut.actif   { color: #16a34a; font-weight: 600; }
+.statut.inactif { color: #dc2626; font-weight: 600; }
+
+.btn-small {
+  padding: 0.3rem 0.7rem;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin-right: 0.3rem;
+}
+
+.btn-warning { background: #f59e0b; color: white; }
+.btn-success { background: #16a34a; color: white; }
+.btn-danger  { background: #dc2626; color: white; }
+
+/* ─── CONFIRMATION ───────────────────────────── */
+.confirmation-container {
+  max-width: 500px;
+  margin: 4rem auto;
+  padding: 0 1rem;
+  text-align: center;
+}
+
+.confirmation-icon {
+  font-size: 5rem;
+  color: #16a34a;
+  margin-bottom: 1rem;
+  animation: popIn 0.5s ease;
+}
+
+@keyframes popIn {
+  0%   { transform: scale(0); opacity: 0; }
+  70%  { transform: scale(1.2); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.confirmation-subtitle {
+  color: #64748b;
+  margin-bottom: 2rem;
+}
+
+.confirmation-card {
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.confirmation-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid #f0f0f0;
+  font-size: 0.95rem;
+}
+
+.confirmation-row:last-child {
+  border-bottom: none;
+}
+
+.confirmation-row.total {
+  margin-top: 0.5rem;
+  padding-top: 1rem;
+  border-top: 2px solid #3b82f6;
+  font-size: 1.1rem;
+  color: #3b82f6;
+}
+
+.confirmation-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ─── FILTRES ────────────────────────────────── */
+.filtres {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin: 1.5rem auto;
+  max-width: 900px;
+  padding: 0 1rem;
+}
+
+.filtre-btn {
+  padding: 0.5rem 1.2rem;
+  border: 2px solid #3b82f6;
+  background: white;
+  color: #3b82f6;
+  border-radius: 50px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+
+.filtre-btn.active, .filtre-btn:hover {
+  background: #3b82f6;
+  color: white;
+}

@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Confirmation — RentCloudy</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+      <span>Rent<strong>Cloudy</strong></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="vehicules.html">Véhicules</a></li>
+      <li><a href="hotels.html">Hôtels</a></li>
+    </ul>
+  </nav>
+
+  <div class="confirmation-container">
+
+    <div class="confirmation-icon">
+      <i class="fas fa-check-circle"></i>
+    </div>
+
+    <h1>Réservation confirmée !</h1>
+    <p class="confirmation-subtitle">Merci pour votre confiance. Voici le récapitulatif.</p>
+
+    <div class="confirmation-card">
+      <div class="confirmation-row">
+        <span>Référence</span>
+        <strong id="conf-ref">—</strong>
+      </div>
+      <div class="confirmation-row">
+        <span>Type</span>
+        <strong id="conf-type">—</strong>
+      </div>
+      <div class="confirmation-row">
+        <span>Nom</span>
+        <strong id="conf-nom">—</strong>
+      </div>
+      <div class="confirmation-row">
+        <span>Du</span>
+        <strong id="conf-debut">—</strong>
+      </div>
+      <div class="confirmation-row">
+        <span>Au</span>
+        <strong id="conf-fin">—</strong>
+      </div>
+      <div class="confirmation-row total">
+        <span>Total payé</span>
+        <strong id="conf-total">—</strong>
+      </div>
+    </div>
+
+    <div class="confirmation-actions">
+      <a href="index.html" class="btn btn-primary">
+        <i class="fas fa-home"></i> Retour à l'accueil
+      </a>
+      <a href="vehicules.html" class="btn btn-secondary">
+        <i class="fas fa-car"></i> Nouvelle réservation
+      </a>
+    </div>
+
+  </div>
+
+  <footer class="footer">
+    <p>© 2024 RentCloudy — Fait avec ❤️ au Cameroun</p>
+  </footer>
+
+  <script src="js/confirmation.js"></script>
+</body>
+</html>

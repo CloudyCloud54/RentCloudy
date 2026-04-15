@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Hôtels — RentCloudy</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+  <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+  <span>Rent<strong>Cloudy</strong></span>
+</div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="vehicules.html">Véhicules</a></li>
+      <li><a href="hotels.html">Hôtels</a></li>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Nos Hôtels</h1>
+    <p>Des hôtels soigneusement sélectionnés pour votre confort</p>
+  </div>
+
+  <div class="filtres">
+  <button class="filtre-btn active" onclick="filtrerHotels('tous', this)">
+    Tous
+  </button>
+  <button class="filtre-btn" onclick="filtrerHotels('Yaoundé', this)">
+    <i class="fas fa-map-marker-alt"></i> Yaoundé
+  </button>
+  <button class="filtre-btn" onclick="filtrerHotels('Douala', this)">
+    <i class="fas fa-map-marker-alt"></i> Douala
+  </button>
+  <button class="filtre-btn" onclick="filtrerHotels('5', this)">
+    ★★★★★
+  </button>
+  <button class="filtre-btn" onclick="filtrerHotels('4', this)">
+    ★★★★
+  </button>
+</div>
+
+  <div class="cards-grid" id="hotels-grid">
+    <!-- Les cartes seront générées par JavaScript -->
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 RentCloudy — Fait avec ❤️ par le mari de Providence</p>
+  </footer>
+
+  <script src="js/hotels.js"></script>
+</body>
+</html>
