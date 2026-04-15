@@ -1,8 +1,8 @@
-const sqlite3 = require('sqlite3').verbose()
+const Database = require('better-sqlite3');
 const path = require('path')
 
 // Crée ou ouvre le fichier de base de données
-const db = new sqlite3.Database(
+const db = new Database(
   path.join(__dirname, 'renteasy.db'),
   (err) => {
     if (err) {
