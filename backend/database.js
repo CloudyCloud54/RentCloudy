@@ -2,16 +2,8 @@ const Database = require('better-sqlite3');
 const path = require('path')
 
 // Crée ou ouvre le fichier de base de données
-const db = new Database(
-  path.join(__dirname, 'renteasy.db'),
-  (err) => {
-    if (err) {
-      console.error('Erreur connexion BD :', err.message)
-    } else {
-      console.log('✅ Base de données connectée')
-    }
-  }
-)
+const db = new Database('renteasy.db');
+module.exports = db;
 
 // Création des tables
 db.serialize(() => {
