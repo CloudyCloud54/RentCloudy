@@ -12,7 +12,7 @@ const prix      = parseFloat(params.get('prix'))
 
 // ─── STRIPE INIT ─────────────────────────────────────
 // Remplacez par votre clé publique Stripe (pk_test_...)
-const STRIPE_PUBLIC_KEY = 'pk_test_REMPLACEZ_PAR_VOTRE_CLE_PUBLIQUE'
+const STRIPE_PUBLIC_KEY = 'pk_test_51TN2qiBpSHdivOMG3PNifIRnuY8eGoHmf8avwnEyBLofvd0Lg6gMYzVYRm0wC6kbeabqrNI86INxdbmLkS4x2RjM00qNbUQyah'
 let stripe, cardElement, prixTotal = 0
 
 // ─── RÉSUMÉ DE L'ITEM ────────────────────────────────
