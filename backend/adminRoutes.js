@@ -72,8 +72,29 @@ router.post('/hotels', verifierToken, (req, res) => {
 // ─── VOIR TOUTES LES RÉSERVATIONS (protégé) ──────────
 router.get('/reservations', verifierToken, (req, res) => {
   try {
-    const rows = db.prepare('SELECT * FROM reservations ORDER BY created_at DESC').all()
+    // Joint avec vehicules et hotels pour avoir le nom de l'item réservé
+    const rows = db.prepare(`
+      SELECT r.*,
+        CASE
+          WHEN r.type = 'vehicule' THEN v.nom
+          WHEN r.type = 'hotel' THEN h.nom
+        END AS nom_item
+      FROM reservations r
+      LEFT JOIN vehicules v ON r.type = 'vehicule' AND r.item_id = v.id
+      LEFT JOIN hotels h ON r.type = 'hotel' AND r.item_id = h.id
+      ORDER BY r.created_at DESC
+    `).all()
     res.json(rows)
+  } catch (err) {
+    res.status(500).json({ erreur: err.message })
+  }
+})
+
+// ─── SUPPRIMER UNE RÉSERVATION ───────────────────────
+router.delete('/reservations/:id', verifierToken, (req, res) => {
+  try {
+    db.prepare('DELETE FROM reservations WHERE id = ?').run(req.params.id)
+    res.json({ message: '🗑️ Réservation supprimée' })
   } catch (err) {
     res.status(500).json({ erreur: err.message })
   }

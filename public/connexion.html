@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Connexion — RentCloudy</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .auth-wrapper {
+      min-height: 100vh; display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(135deg, #eff6ff 0%, #f0fdf4 100%);
+      padding: 2rem 1rem;
+    }
+    .auth-card {
+      background: white; border-radius: 20px; padding: 2.5rem;
+      width: 100%; max-width: 420px;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.08);
+    }
+    .auth-logo { text-align:center; margin-bottom:2rem; }
+    .auth-logo i { font-size:2.5rem; color:#3b82f6; }
+    .auth-logo h1 { font-size:1.5rem; margin:0.5rem 0 0.25rem; }
+    .auth-logo p { color:#64748b; font-size:0.9rem; }
+    .auth-footer { text-align:center; margin-top:1.5rem; color:#64748b; font-size:0.9rem; }
+    .auth-footer a { color:#3b82f6; font-weight:600; text-decoration:none; }
+    .input-icon { position:relative; }
+    .input-icon i { position:absolute; left:12px; top:50%; transform:translateY(-50%); color:#94a3b8; }
+    .input-icon input { padding-left:2.5rem !important; }
+    #erreur-global { background:#fef2f2; border:1px solid #fca5a5; color:#dc2626; border-radius:8px; padding:0.75rem 1rem; margin-bottom:1rem; display:none; font-size:0.9rem; }
+    .toggle-pwd { position:absolute; right:12px; top:50%; transform:translateY(-50%); cursor:pointer; color:#94a3b8; border:none; background:none; }
+  </style>
+</head>
+<body>
+
+  <div class="auth-wrapper">
+    <div class="auth-card">
+
+      <div class="auth-logo">
+        <a href="index.html" style="text-decoration:none;color:inherit;">
+          <i class="fas fa-cloud"></i>
+          <h1>Rent<strong>Cloudy</strong></h1>
+        </a>
+        <p>Connectez-vous à votre compte</p>
+      </div>
+
+      <div id="erreur-global"></div>
+
+      <div class="form-group">
+        <label>Email</label>
+        <div class="input-icon">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" placeholder="jean@example.com"/>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <div class="input-icon" style="position:relative;">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="••••••••"/>
+          <button class="toggle-pwd" onclick="togglePwd()" type="button" tabindex="-1">
+            <i class="fas fa-eye" id="oeil"></i>
+          </button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" style="width:100%;justify-content:center;padding:0.9rem;"
+              id="btn-connexion" onclick="seConnecter()">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+      </button>
+
+      <div class="auth-footer" style="margin-top:1rem;">
+        Pas encore de compte ? <a href="inscription.html">S'inscrire gratuitement</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    // Si déjà connecté, redirige
+    if (localStorage.getItem('clientToken')) {
+      window.location.href = 'dashboard.html'
+    }
+
+    function togglePwd() {
+      const input = document.getElementById('password')
+      const oeil  = document.getElementById('oeil')
+      if (input.type === 'password') {
+        input.type = 'text'
+        oeil.classList.replace('fa-eye', 'fa-eye-slash')
+      } else {
+        input.type = 'password'
+        oeil.classList.replace('fa-eye-slash', 'fa-eye')
+      }
+    }
+
+    function afficherErreur(msg) {
+      const el = document.getElementById('erreur-global')
+      el.textContent = '⚠️ ' + msg
+      el.style.display = 'block'
+    }
+
+    async function seConnecter() {
+      document.getElementById('erreur-global').style.display = 'none'
+      const email = document.getElementById('email').value.trim()
+      const pwd   = document.getElementById('password').value
+      const btn   = document.getElementById('btn-connexion')
+
+      if (!email || !pwd) return afficherErreur('Remplissez tous les champs')
+
+      btn.disabled = true
+      btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Connexion...'
+
+      const res  = await fetch('/client/connexion', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password: pwd })
+      })
+      const data = await res.json()
+
+      if (data.token) {
+        localStorage.setItem('clientToken', data.token)
+        localStorage.setItem('clientNom', data.nom)
+        localStorage.setItem('clientEmail', data.email)
+        const redirect = new URLSearchParams(window.location.search).get('redirect')
+        window.location.href = redirect || 'dashboard.html'
+      } else {
+        afficherErreur(data.erreur)
+        btn.disabled = false
+        btn.innerHTML = '<i class="fas fa-sign-in-alt"></i> Se connecter'
+      }
+    }
+
+    document.addEventListener('keydown', e => { if (e.key === 'Enter') seConnecter() })
+  </script>
+</body>
+</html>

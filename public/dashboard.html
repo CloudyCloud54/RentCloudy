@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mon espace — RentCloudy</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .dashboard-layout {
+      max-width: 1000px; margin: 2rem auto; padding: 0 1rem;
+      display: grid; grid-template-columns: 260px 1fr; gap: 1.5rem;
+    }
+    @media(max-width:700px){ .dashboard-layout{ grid-template-columns:1fr; } }
+
+    /* Sidebar */
+    .dash-sidebar {
+      background: white; border-radius: 16px; padding: 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07); height: fit-content;
+    }
+    .dash-avatar {
+      width: 70px; height: 70px; border-radius: 50%;
+      background: linear-gradient(135deg,#3b82f6,#8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; color: white; margin: 0 auto 1rem;
+    }
+    .dash-nom { text-align:center; font-weight:700; font-size:1.1rem; }
+    .dash-email { text-align:center; color:#64748b; font-size:0.82rem; margin-bottom:1.5rem; }
+    .dash-nav { list-style:none; padding:0; margin:0; }
+    .dash-nav li { margin-bottom:0.25rem; }
+    .dash-nav a {
+      display:flex; align-items:center; gap:0.7rem;
+      padding: 0.7rem 1rem; border-radius:10px;
+      color:#475569; text-decoration:none; font-weight:500;
+      transition: all 0.2s;
+    }
+    .dash-nav a:hover, .dash-nav a.active {
+      background:#eff6ff; color:#3b82f6;
+    }
+    .dash-nav a i { width:18px; text-align:center; }
+    .dash-deconnexion {
+      margin-top:1.5rem; padding-top:1rem; border-top:1px solid #f1f5f9;
+    }
+
+    /* Contenu principal */
+    .dash-main { display:flex; flex-direction:column; gap:1rem; }
+    .dash-section { background:white; border-radius:16px; padding:1.5rem; box-shadow:0 1px 4px rgba(0,0,0,0.07); display:none; }
+    .dash-section.active { display:block; }
+
+    /* Stats mini */
+    .mini-stats { display:grid; grid-template-columns:repeat(auto-fit,minmax(140px,1fr)); gap:1rem; margin-bottom:1.5rem; }
+    .mini-stat {
+      background:#f8fafc; border-radius:12px; padding:1rem; text-align:center;
+      border:1px solid #e2e8f0;
+    }
+    .mini-stat .val { font-size:1.6rem; font-weight:700; color:#1e293b; }
+    .mini-stat .lbl { font-size:0.78rem; color:#94a3b8; margin-top:2px; }
+
+    /* Carte réservation */
+    .resa-card {
+      border:1px solid #e2e8f0; border-radius:12px; padding:1.2rem;
+      margin-bottom:1rem; display:flex; gap:1rem; align-items:flex-start;
+    }
+    .resa-card-icon {
+      width:48px; height:48px; border-radius:10px; flex-shrink:0;
+      display:flex; align-items:center; justify-content:center; font-size:1.3rem;
+    }
+    .resa-card-icon.vehicule { background:#eff6ff; color:#3b82f6; }
+    .resa-card-icon.hotel    { background:#fff7ed; color:#f97316; }
+    .resa-card-info { flex:1; }
+    .resa-card-info h4 { margin:0 0 0.3rem; font-size:1rem; }
+    .resa-card-info .dates { color:#64748b; font-size:0.85rem; }
+    .resa-card-prix { font-weight:700; color:#16a34a; font-size:1rem; white-space:nowrap; }
+    .badge-resa { display:inline-block; padding:2px 10px; border-radius:20px; font-size:0.75rem; font-weight:600; margin-bottom:4px; }
+    .badge-vehicule { background:#eff6ff; color:#3b82f6; }
+    .badge-hotel    { background:#fff7ed; color:#f97316; }
+
+    /* Profil form */
+    .profil-grid { display:grid; grid-template-columns:1fr 1fr; gap:1rem; }
+    @media(max-width:500px){ .profil-grid{ grid-template-columns:1fr; } }
+    #profil-msg { margin-top:0.5rem; font-size:0.9rem; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+      <span>Rent<strong>Cloudy</strong></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="vehicules.html">Véhicules</a></li>
+      <li><a href="hotels.html">Hôtels</a></li>
+      <ul id="nav-auth"></ul>
+    </ul>
+  </nav>
+
+  <div class="page-header">
+    <h1>Mon espace</h1>
+    <p>Bienvenue <span id="header-nom"></span> 👋</p>
+  </div>
+
+  <div class="dashboard-layout">
+
+    <!-- Sidebar -->
+    <aside class="dash-sidebar">
+      <div class="dash-avatar" id="avatar-initiale"></div>
+      <div class="dash-nom" id="sidebar-nom"></div>
+      <div class="dash-email" id="sidebar-email"></div>
+      <ul class="dash-nav">
+        <li>
+          <a href="#" class="active" id="nav-accueil" onclick="afficherSection('accueil', this)">
+            <i class="fas fa-home"></i> Tableau de bord
+          </a>
+        </li>
+        <li>
+          <a href="#" id="nav-reservations" onclick="afficherSection('reservations', this)">
+            <i class="fas fa-calendar-check"></i> Mes réservations
+          </a>
+        </li>
+        <li>
+          <a href="#" id="nav-profil" onclick="afficherSection('profil', this)">
+            <i class="fas fa-user-edit"></i> Mon profil
+          </a>
+        </li>
+        <li style="margin-top:0.5rem;">
+          <a href="vehicules.html">
+            <i class="fas fa-car"></i> Réserver un véhicule
+          </a>
+        </li>
+        <li>
+          <a href="hotels.html">
+            <i class="fas fa-hotel"></i> Réserver un hôtel
+          </a>
+        </li>
+      </ul>
+      <div class="dash-deconnexion">
+        <button class="btn btn-secondary" style="width:100%;justify-content:center;"
+                onclick="seDeconnecterClient()">
+          <i class="fas fa-sign-out-alt"></i> Déconnexion
+        </button>
+      </div>
+    </aside>
+
+    <!-- Contenu -->
+    <main class="dash-main">
+
+      <!-- Accueil -->
+      <div class="dash-section active" id="section-accueil">
+        <h2>Tableau de bord</h2>
+        <div class="mini-stats" id="mini-stats">
+          <div class="mini-stat"><div class="val" id="stat-total">—</div><div class="lbl">Réservations</div></div>
+          <div class="mini-stat"><div class="val" id="stat-vehicules">—</div><div class="lbl">Véhicules loués</div></div>
+          <div class="mini-stat"><div class="val" id="stat-hotels">—</div><div class="lbl">Hôtels réservés</div></div>
+          <div class="mini-stat"><div class="val" id="stat-depenses">—</div><div class="lbl">FCFA dépensés</div></div>
+        </div>
+        <h3 style="margin-bottom:1rem;">Dernières réservations</h3>
+        <div id="dernieres-resas">Chargement...</div>
+        <div style="margin-top:1.5rem;display:flex;gap:1rem;flex-wrap:wrap;">
+          <a href="vehicules.html" class="btn btn-primary">
+            <i class="fas fa-car"></i> Louer un véhicule
+          </a>
+          <a href="hotels.html" class="btn btn-secondary">
+            <i class="fas fa-hotel"></i> Réserver un hôtel
+          </a>
+        </div>
+      </div>
+
+      <!-- Réservations -->
+      <div class="dash-section" id="section-reservations">
+        <h2><i class="fas fa-calendar-check" style="color:#3b82f6;"></i> Mes réservations</h2>
+        <div id="toutes-resas">Chargement...</div>
+      </div>
+
+      <!-- Profil -->
+      <div class="dash-section" id="section-profil">
+        <h2><i class="fas fa-user-edit" style="color:#3b82f6;"></i> Mon profil</h2>
+        <div class="profil-grid">
+          <div class="form-group">
+            <label>Nom complet</label>
+            <input type="text" id="profil-nom" placeholder="Jean Dupont"/>
+          </div>
+          <div class="form-group">
+            <label>Email <span style="color:#94a3b8;font-size:0.8rem;">(non modifiable)</span></label>
+            <input type="email" id="profil-email" disabled style="background:#f8fafc;color:#94a3b8;"/>
+          </div>
+          <div class="form-group">
+            <label>Téléphone</label>
+            <input type="tel" id="profil-tel" placeholder="+237 6XX XXX XXX"/>
+          </div>
+          <div class="form-group">
+            <label>Nouveau mot de passe <span style="color:#94a3b8;font-size:0.8rem;">(laisser vide = inchangé)</span></label>
+            <input type="password" id="profil-pwd" placeholder="••••••••"/>
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="sauvegarderProfil()">
+          <i class="fas fa-save"></i> Enregistrer
+        </button>
+        <p id="profil-msg"></p>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <p>© 2026 RentCloudy</p>
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script>
+    // ─── VÉRIF CONNEXION ─────────────────────────────
+    if (!isConnecte()) window.location.href = 'connexion.html'
+
+    const token = getClientToken()
+    const nom   = getClientNom()
+    const email = localStorage.getItem('clientEmail') || ''
+
+    // Remplir sidebar
+    document.getElementById('header-nom').textContent  = nom
+    document.getElementById('sidebar-nom').textContent = nom
+    document.getElementById('sidebar-email').textContent = email
+    document.getElementById('avatar-initiale').textContent = nom ? nom[0].toUpperCase() : '?'
+
+    // ─── NAVIGATION ─────────────────────────────────
+    function afficherSection(nom, el) {
+      document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'))
+      document.querySelectorAll('.dash-nav a').forEach(a => a.classList.remove('active'))
+      document.getElementById(`section-${nom}`).classList.add('active')
+      el.classList.add('active')
+      if (nom === 'reservations') chargerToutesResas()
+      if (nom === 'profil')       chargerProfil()
+      return false
+    }
+
+    // ─── RESERVATIONS ────────────────────────────────
+    function carteResa(r) {
+      return `
+        <div class="resa-card">
+          <div class="resa-card-icon ${r.type}">
+            <i class="fas fa-${r.type === 'vehicule' ? 'car' : 'hotel'}"></i>
+          </div>
+          <div class="resa-card-info">
+            <span class="badge-resa badge-${r.type}">${r.type === 'vehicule' ? '🚗 Véhicule' : '🏨 Hôtel'}</span>
+            <h4>${r.nom_item || '—'}</h4>
+            <div class="dates">
+              <i class="fas fa-calendar"></i> ${r.date_debut} → ${r.date_fin}
+            </div>
+          </div>
+          <div class="resa-card-prix">${r.prix_total.toLocaleString()} FCFA</div>
+        </div>
+      `
+    }
+
+    async function chargerDashboard() {
+      const res  = await fetch('/client/mes-reservations', {
+        headers: { Authorization: token }
+      })
+      const resas = await res.json()
+
+      if (!Array.isArray(resas)) return
+
+      // Stats
+      document.getElementById('stat-total').textContent     = resas.length
+      document.getElementById('stat-vehicules').textContent = resas.filter(r => r.type === 'vehicule').length
+      document.getElementById('stat-hotels').textContent    = resas.filter(r => r.type === 'hotel').length
+      document.getElementById('stat-depenses').textContent  = resas.reduce((s,r) => s + r.prix_total, 0).toLocaleString()
+
+      // 3 dernières
+      const container = document.getElementById('dernieres-resas')
+      if (resas.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center;padding:2rem;color:#94a3b8;">
+            <i class="fas fa-calendar-times" style="font-size:2rem;display:block;margin-bottom:0.5rem;"></i>
+            Aucune réservation pour l'instant.
+          </div>`
+        return
+      }
+      container.innerHTML = resas.slice(0, 3).map(carteResa).join('')
+    }
+
+    async function chargerToutesResas() {
+      const res  = await fetch('/client/mes-reservations', { headers: { Authorization: token } })
+      const resas = await res.json()
+      const container = document.getElementById('toutes-resas')
+
+      if (!Array.isArray(resas) || resas.length === 0) {
+        container.innerHTML = `<div style="text-align:center;padding:2rem;color:#94a3b8;">
+          <i class="fas fa-inbox" style="font-size:2rem;display:block;margin-bottom:0.5rem;"></i>
+          Aucune réservation trouvée.</div>`
+        return
+      }
+      container.innerHTML = resas.map(carteResa).join('')
+    }
+
+    // ─── PROFIL ─────────────────────────────────────
+    async function chargerProfil() {
+      const res  = await fetch('/client/profil', { headers: { Authorization: token } })
+      const data = await res.json()
+      document.getElementById('profil-nom').value   = data.nom || ''
+      document.getElementById('profil-email').value = data.email || ''
+      document.getElementById('profil-tel').value   = data.telephone || ''
+    }
+
+    async function sauvegarderProfil() {
+      const res = await fetch('/client/profil', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: token },
+        body: JSON.stringify({
+          nom:       document.getElementById('profil-nom').value,
+          telephone: document.getElementById('profil-tel').value,
+          password:  document.getElementById('profil-pwd').value || undefined
+        })
+      })
+      const data = await res.json()
+      const msg  = document.getElementById('profil-msg')
+      msg.textContent = data.message || data.erreur
+      msg.style.color = data.message ? '#16a34a' : '#dc2626'
+
+      if (data.message) {
+        // Met à jour le nom en localStorage
+        localStorage.setItem('clientNom', document.getElementById('profil-nom').value)
+        document.getElementById('sidebar-nom').textContent  = document.getElementById('profil-nom').value
+        document.getElementById('header-nom').textContent   = document.getElementById('profil-nom').value
+        document.getElementById('avatar-initiale').textContent = document.getElementById('profil-nom').value[0]?.toUpperCase()
+      }
+    }
+
+    // Chargement initial
+    chargerDashboard()
+  </script>
+</body>
+</html>

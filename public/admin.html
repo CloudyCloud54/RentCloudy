@@ -6,6 +6,17 @@
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+    .stat-card {
+      background: white; border-radius: 12px; padding: 1.2rem 1.5rem;
+      display: flex; align-items: center; gap: 1rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    }
+    .stat-card i { font-size: 1.8rem; }
+    .stat-val { display: block; font-size: 1.5rem; font-weight: 700; color: #1e293b; }
+    .stat-label { display: block; font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.05em; }
+  </style>
 </head>
 <body>
 
@@ -13,128 +24,92 @@
   <div id="login-screen">
     <div class="reservation-form" style="max-width:420px; margin:4rem auto;">
       <h2><i class="fas fa-lock"></i> Espace Admin</h2>
-
       <div class="form-group">
         <label>Email</label>
         <input type="email" id="admin-email" placeholder="admin@renteasy.cm" />
       </div>
-
       <div class="form-group">
         <label>Mot de passe</label>
-        <input type="password" id="admin-password" placeholder="••••••••" />
+        <input type="password" id="admin-password" placeholder="••••••••"
+               onkeydown="if(event.key==='Enter') seConnecter()" />
       </div>
-
-      <button class="btn btn-primary" style="width:100%; justify-content:center;"
-              onclick="seConnecter()">
+      <button class="btn btn-primary" style="width:100%; justify-content:center;" onclick="seConnecter()">
         <i class="fas fa-sign-in-alt"></i> Se connecter
       </button>
-
       <p id="login-erreur" style="color:red; margin-top:1rem;"></p>
     </div>
   </div>
 
-  <!-- DASHBOARD ADMIN (caché au départ) -->
+  <!-- DASHBOARD -->
   <div id="dashboard" style="display:none;">
-
-  <nav class="navbar">
-    <div class="nav-logo">
-      <i class="fas fa-cloud" style="color:#3b82f6;"></i>
-      <span>Admin <strong>RentCloudy</strong></span>
-    </div>
-    <button class="btn btn-secondary" onclick="seDeconnecter()">
-      <i class="fas fa-sign-out-alt"></i> Déconnexion
-    </button>
-  </nav>
-
-  <div style="max-width:1000px; margin:2rem auto; padding:0 1rem;">
-
-    <!-- ONGLETS DE NAVIGATION -->
-    <div class="admin-tabs">
-      <button class="tab-btn active" onclick="afficherSection('reservations')">
-        <i class="fas fa-list"></i> Réservations
+    <nav class="navbar">
+      <div class="nav-logo">
+        <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+        <span>Admin <strong>RentCloudy</strong></span>
+      </div>
+      <button class="btn btn-secondary" onclick="seDeconnecter()">
+        <i class="fas fa-sign-out-alt"></i> Déconnexion
       </button>
-      <button class="tab-btn" onclick="afficherSection('vehicules')">
-        <i class="fas fa-car"></i> Véhicules
-      </button>
-      <button class="tab-btn" onclick="afficherSection('hotels')">
-        <i class="fas fa-hotel"></i> Hôtels
-      </button>
-    </div>
+    </nav>
 
-    <!-- SECTION RÉSERVATIONS -->
-    <div id="section-reservations" class="admin-section">
-      <h2>Toutes les réservations</h2>
-      <div id="tableau-reservations">Chargement...</div>
-    </div>
+    <div style="max-width:1100px; margin:2rem auto; padding:0 1rem;">
 
-    <!-- SECTION VÉHICULES -->
-    <div id="section-vehicules" class="admin-section" style="display:none;">
-
-      <!-- Formulaire ajout -->
-      <div class="reservation-form" style="margin-bottom:2rem;">
-        <h2><i class="fas fa-plus"></i> Ajouter un véhicule</h2>
-        <div class="form-group">
-          <label>Nom</label>
-          <input type="text" id="v-nom" placeholder="Toyota Corolla" />
-        </div>
-        <div class="form-group">
-          <label>Type</label>
-          <input type="text" id="v-type" placeholder="berline, SUV, Minibus..." />
-        </div>
-        <div class="form-group">
-          <label>Prix par jour (FCFA)</label>
-          <input type="number" id="v-prix" placeholder="25000" />
-        </div>
-        <div class="form-group">
-          <label>Nombre de places</label>
-          <input type="number" id="v-places" placeholder="5" />
-        </div>
-        <button class="btn btn-primary" onclick="ajouterVehicule()">
-          <i class="fas fa-plus"></i> Ajouter
-        </button>
-        <p id="v-msg" style="margin-top:0.5rem;"></p>
+      <!-- STATS -->
+      <div class="stats-grid" id="stats">
+        <!-- chargé dynamiquement -->
       </div>
 
-      <!-- Liste véhicules -->
-      <h2>Véhicules existants</h2>
-      <div id="liste-vehicules">Chargement...</div>
-    </div>
-
-    <!-- SECTION HÔTELS -->
-    <div id="section-hotels" class="admin-section" style="display:none;">
-
-      <!-- Formulaire ajout -->
-      <div class="reservation-form" style="margin-bottom:2rem;">
-        <h2><i class="fas fa-plus"></i> Ajouter un hôtel</h2>
-        <div class="form-group">
-          <label>Nom</label>
-          <input type="text" id="h-nom" placeholder="Hôtel Hilton Yaoundé" />
-        </div>
-        <div class="form-group">
-          <label>Ville</label>
-          <input type="text" id="h-ville" placeholder="Yaoundé, Douala..." />
-        </div>
-        <div class="form-group">
-          <label>Prix par nuit (FCFA)</label>
-          <input type="number" id="h-prix" placeholder="80000" />
-        </div>
-        <div class="form-group">
-          <label>Étoiles (1 à 5)</label>
-          <input type="number" id="h-etoiles" min="1" max="5" placeholder="4" />
-        </div>
-        <button class="btn btn-primary" onclick="ajouterHotel()">
-          <i class="fas fa-plus"></i> Ajouter
+      <!-- ONGLETS -->
+      <div class="admin-tabs">
+        <button class="tab-btn active" onclick="afficherSection('reservations', this)">
+          <i class="fas fa-list"></i> Réservations
         </button>
-        <p id="h-msg" style="margin-top:0.5rem;"></p>
+        <button class="tab-btn" onclick="afficherSection('vehicules', this)">
+          <i class="fas fa-car"></i> Véhicules
+        </button>
+        <button class="tab-btn" onclick="afficherSection('hotels', this)">
+          <i class="fas fa-hotel"></i> Hôtels
+        </button>
       </div>
 
-      <!-- Liste hôtels -->
-      <h2>Hôtels existants</h2>
-      <div id="liste-hotels">Chargement...</div>
-    </div>
+      <!-- RÉSERVATIONS -->
+      <div id="section-reservations" class="admin-section">
+        <h2>Toutes les réservations</h2>
+        <div id="tableau-reservations">Chargement...</div>
+      </div>
 
+      <!-- VÉHICULES -->
+      <div id="section-vehicules" class="admin-section" style="display:none;">
+        <div class="reservation-form" style="margin-bottom:2rem;">
+          <h2><i class="fas fa-plus"></i> Ajouter un véhicule</h2>
+          <div class="form-group"><label>Nom</label><input type="text" id="v-nom" placeholder="Toyota Corolla" /></div>
+          <div class="form-group"><label>Type</label><input type="text" id="v-type" placeholder="berline, SUV, Minibus..." /></div>
+          <div class="form-group"><label>Prix par jour (FCFA)</label><input type="number" id="v-prix" placeholder="25000" /></div>
+          <div class="form-group"><label>Nombre de places</label><input type="number" id="v-places" placeholder="5" /></div>
+          <button class="btn btn-primary" onclick="ajouterVehicule()"><i class="fas fa-plus"></i> Ajouter</button>
+          <p id="v-msg" style="margin-top:0.5rem;"></p>
+        </div>
+        <h2>Véhicules existants</h2>
+        <div id="liste-vehicules">Chargement...</div>
+      </div>
+
+      <!-- HÔTELS -->
+      <div id="section-hotels" class="admin-section" style="display:none;">
+        <div class="reservation-form" style="margin-bottom:2rem;">
+          <h2><i class="fas fa-plus"></i> Ajouter un hôtel</h2>
+          <div class="form-group"><label>Nom</label><input type="text" id="h-nom" placeholder="Hôtel Hilton Yaoundé" /></div>
+          <div class="form-group"><label>Ville</label><input type="text" id="h-ville" placeholder="Yaoundé, Douala..." /></div>
+          <div class="form-group"><label>Prix par nuit (FCFA)</label><input type="number" id="h-prix" placeholder="80000" /></div>
+          <div class="form-group"><label>Étoiles (1 à 5)</label><input type="number" id="h-etoiles" min="1" max="5" placeholder="4" /></div>
+          <button class="btn btn-primary" onclick="ajouterHotel()"><i class="fas fa-plus"></i> Ajouter</button>
+          <p id="h-msg" style="margin-top:0.5rem;"></p>
+        </div>
+        <h2>Hôtels existants</h2>
+        <div id="liste-hotels">Chargement...</div>
+      </div>
+
+    </div>
   </div>
-</div>
 
   <script src="js/admin.js"></script>
 </body>
