@@ -1,78 +1,393 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>RentCloudy — Location de véhicules & hôtels</title>
-  <link rel="stylesheet" href="css/style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <title>RentCloudy — Location de véhicules & hôtels au Cameroun</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    /* ── HERO AMÉLIORÉ ─────────────────────────────── */
+    .hero {
+      min-height: 92vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e3a5f 40%, #1a56a0 100%);
+      display: flex; align-items: center; justify-content: center;
+      padding: 5rem 5%; position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse at 70% 50%, rgba(59,130,246,0.25) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(139,92,246,0.15) 0%, transparent 50%);
+    }
+    .hero-inner {
+      max-width: 1200px; width: 100%; display: flex;
+      align-items: center; gap: 4rem; position: relative; z-index: 1;
+    }
+    .hero-content { flex: 1; }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      background: rgba(59,130,246,0.2); border: 1px solid rgba(59,130,246,0.4);
+      color: #93c5fd; padding: 0.4rem 1rem; border-radius: 50px;
+      font-size: 0.82rem; font-weight: 600; margin-bottom: 1.5rem;
+      backdrop-filter: blur(4px);
+    }
+    .hero-content h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem); font-weight: 800;
+      color: white; line-height: 1.15; margin-bottom: 1.2rem;
+    }
+    .hero-content h1 .gradient-text {
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-content p {
+      font-size: 1.1rem; color: #94a3b8; line-height: 1.8; margin-bottom: 2.5rem; max-width: 480px;
+    }
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .btn-hero-primary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: white; padding: 0.85rem 1.8rem; border-radius: 12px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      transition: all 0.3s; box-shadow: 0 4px 20px rgba(59,130,246,0.4);
+    }
+    .btn-hero-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(59,130,246,0.5); }
+    .btn-hero-secondary {
+      display: inline-flex; align-items: center; gap: 0.6rem;
+      background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+      color: white; padding: 0.85rem 1.8rem; border-radius: 12px;
+      font-weight: 600; font-size: 1rem; text-decoration: none;
+      transition: all 0.3s; backdrop-filter: blur(4px);
+    }
+    .btn-hero-secondary:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+    .hero-cards {
+      flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; max-width: 420px;
+    }
+    .hero-card {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 16px; padding: 1.5rem; backdrop-filter: blur(10px);
+      transition: transform 0.3s;
+    }
+    .hero-card:hover { transform: translateY(-4px); }
+    .hero-card:first-child { grid-column: span 2; }
+    .hero-card-icon { font-size: 1.8rem; margin-bottom: 0.75rem; }
+    .hero-card h3 { color: white; font-size: 1rem; font-weight: 600; margin-bottom: 0.25rem; }
+    .hero-card p { color: #94a3b8; font-size: 0.82rem; }
+    .hero-card .price { color: #60a5fa; font-weight: 700; font-size: 1.1rem; margin-top: 0.5rem; }
+
+    /* ── STATS ─────────────────────────────────────── */
+    .stats-section {
+      background: white; padding: 3rem 5%;
+      border-bottom: 1px solid #f1f5f9;
+    }
+    .stats-grid {
+      max-width: 900px; margin: 0 auto;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem;
+      text-align: center;
+    }
+    .stat-item h3 { font-size: 2.2rem; font-weight: 800; color: #3b82f6; }
+    .stat-item p { color: #64748b; font-size: 0.9rem; margin-top: 0.25rem; }
+
+    /* ── COMMENT ÇA MARCHE ─────────────────────────── */
+    .how-section {
+      padding: 5rem 5%; background: #f8faff;
+    }
+    .section-title {
+      text-align: center; margin-bottom: 3rem;
+    }
+    .section-title h2 { font-size: 2rem; font-weight: 700; color: #1e293b; }
+    .section-title p { color: #64748b; margin-top: 0.5rem; }
+    .steps { display: flex; gap: 1.5rem; max-width: 900px; margin: 0 auto; flex-wrap: wrap; }
+    .step {
+      flex: 1; min-width: 200px; text-align: center;
+      background: white; border-radius: 16px; padding: 2rem 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06); position: relative;
+    }
+    .step-num {
+      width: 48px; height: 48px; background: linear-gradient(135deg, #3b82f6, #6366f1);
+      border-radius: 50%; color: white; font-weight: 700; font-size: 1.2rem;
+      display: flex; align-items: center; justify-content: center; margin: 0 auto 1rem;
+    }
+    .step h3 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-bottom: 0.5rem; }
+    .step p { color: #64748b; font-size: 0.88rem; line-height: 1.6; }
+
+    /* ── CATALOGUE ─────────────────────────────────── */
+    .catalogue-section { padding: 5rem 5%; background: white; }
+    .catalogue-tabs {
+      display: flex; gap: 0.75rem; justify-content: center; margin-bottom: 2.5rem;
+    }
+    .tab-btn {
+      padding: 0.6rem 1.5rem; border-radius: 50px; border: 2px solid #e2e8f0;
+      background: white; color: #64748b; font-weight: 600; cursor: pointer;
+      font-family: 'Poppins', sans-serif; font-size: 0.9rem; transition: all 0.2s;
+    }
+    .tab-btn.active { border-color: #3b82f6; background: #3b82f6; color: white; }
+    .catalogue-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+    }
+    .cat-card {
+      border-radius: 16px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      background: white; transition: all 0.3s; border: 1px solid #f1f5f9;
+    }
+    .cat-card:hover { transform: translateY(-6px); box-shadow: 0 12px 30px rgba(0,0,0,0.12); }
+    .cat-card img { width: 100%; height: 175px; object-fit: cover; }
+    .cat-card-body { padding: 1.25rem; }
+    .cat-card-body h3 { font-size: 1rem; font-weight: 600; color: #1e293b; margin-bottom: 0.4rem; }
+    .cat-card-price { color: #3b82f6; font-weight: 700; font-size: 1.05rem; margin-bottom: 1rem; }
+    .cat-card-btn {
+      display: block; text-align: center; background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: white; padding: 0.6rem; border-radius: 8px; font-weight: 600;
+      font-size: 0.88rem; text-decoration: none; transition: opacity 0.2s;
+    }
+    .cat-card-btn:hover { opacity: 0.9; }
+
+    /* ── PAIEMENT SECTION ──────────────────────────── */
+    .payment-section {
+      padding: 5rem 5%;
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      text-align: center; color: white;
+    }
+    .payment-section h2 { font-size: 2rem; font-weight: 700; margin-bottom: 0.75rem; }
+    .payment-section p { color: #94a3b8; margin-bottom: 2.5rem; }
+    .payment-methods {
+      display: flex; gap: 1.5rem; justify-content: center; flex-wrap: wrap;
+    }
+    .pay-method {
+      background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+      border-radius: 14px; padding: 1.5rem 2rem; backdrop-filter: blur(8px);
+      min-width: 180px;
+    }
+    .pay-method i { font-size: 2rem; margin-bottom: 0.75rem; }
+    .pay-method h4 { font-weight: 600; margin-bottom: 0.25rem; }
+    .pay-method p { font-size: 0.82rem; color: #94a3b8; margin: 0; }
+    .mtn-color { color: #fbbf24; }
+    .orange-color { color: #f97316; }
+    .stripe-color { color: #a78bfa; }
+
+    /* ── FOOTER ───────────────────────────────────── */
+    .footer-new {
+      background: #0f172a; color: #94a3b8; padding: 2rem 5%;
+      display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-logo { display: flex; align-items: center; gap: 0.5rem; color: white; font-weight: 600; font-size: 1.1rem; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { color: #94a3b8; text-decoration: none; font-size: 0.88rem; transition: color 0.2s; }
+    .footer-links a:hover { color: white; }
+
+    @media(max-width: 768px) {
+      .hero-inner { flex-direction: column; gap: 2rem; }
+      .hero-cards { max-width: 100%; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); }
+      .steps { flex-direction: column; }
+    }
+    @media(max-width: 480px) {
+      .stats-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
 
   <!-- NAVBAR -->
   <nav class="navbar">
     <div class="nav-logo">
-  <i class="fas fa-cloud" style="color:#3b82f6;"></i>
-  <span>Rent<strong>Cloudy</strong></span>
-</div>
+      <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+      <span>Rent<strong>Cloudy</strong></span>
+    </div>
     <ul class="nav-links">
       <li><a href="index.html">Accueil</a></li>
       <li><a href="vehicules.html">Véhicules</a></li>
       <li><a href="hotels.html">Hôtels</a></li>
-          <ul id="nav-auth"></ul>
+      <ul id="nav-auth"></ul>
     </ul>
   </nav>
 
   <!-- HERO -->
   <section class="hero">
-    <div class="hero-content">
-      <h1>Voyagez en toute <span>liberté</span></h1>
-      <p>Réservez un véhicule ou un hôtel en quelques clics, partout au Cameroun.</p>
-      <div class="hero-buttons">
-        <a href="vehicules.html" class="btn btn-primary">
-          <i class="fas fa-car"></i> Louer un véhicule
-        </a>
-        <a href="hotels.html" class="btn btn-secondary">
-          <i class="fas fa-hotel"></i> Réserver un hôtel
-        </a>
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i class="fas fa-map-marker-alt"></i> Cameroun — Yaoundé & Douala
+        </div>
+        <h1>
+          Voyagez en toute<br>
+          <span class="gradient-text">liberté au Cameroun</span>
+        </h1>
+        <p>
+          Réservez un véhicule ou un hôtel en quelques clics.
+          Paiement Mobile Money ou carte bancaire. Confirmation instantanée.
+        </p>
+        <div class="hero-buttons">
+          <a href="vehicules.html" class="btn-hero-primary">
+            <i class="fas fa-car"></i> Louer un véhicule
+          </a>
+          <a href="hotels.html" class="btn-hero-secondary">
+            <i class="fas fa-hotel"></i> Réserver un hôtel
+          </a>
+        </div>
       </div>
-    </div>
-    <div class="hero-image">
-      <img src="images/hero.jpg" alt="Voyage" />
+
+      <div class="hero-cards">
+        <div class="hero-card">
+          <div class="hero-card-icon">🚗</div>
+          <h3>Toyota Corolla</h3>
+          <p>Berline confortable, idéale pour la ville</p>
+          <div class="price">25 000 FCFA / jour</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-icon">🏨</div>
+          <h3>Hilton Yaoundé</h3>
+          <p>5 étoiles</p>
+          <div class="price">150 000 FCFA / nuit</div>
+        </div>
+        <div class="hero-card">
+          <div class="hero-card-icon">📱</div>
+          <h3>Mobile Money</h3>
+          <p>MTN MoMo & Orange Money acceptés</p>
+        </div>
+      </div>
     </div>
   </section>
 
   <!-- STATS -->
-  <section class="stats">
-    <div class="stat-card">
-      <i class="fas fa-car"></i>
-      <h3>4+</h3>
-      <p>Véhicules disponibles</p>
+  <section class="stats-section">
+    <div class="stats-grid">
+      <div class="stat-item">
+        <h3>4+</h3>
+        <p>Véhicules disponibles</p>
+      </div>
+      <div class="stat-item">
+        <h3>4+</h3>
+        <p>Hôtels partenaires</p>
+      </div>
+      <div class="stat-item">
+        <h3>2</h3>
+        <p>Villes couvertes</p>
+      </div>
+      <div class="stat-item">
+        <h3>100%</h3>
+        <p>Clients satisfaits</p>
+      </div>
     </div>
-    <div class="stat-card">
-      <i class="fas fa-hotel"></i>
-      <h3>4+</h3>
-      <p>Hôtels partenaires</p>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section class="how-section">
+    <div class="section-title">
+      <h2>Comment ça marche ?</h2>
+      <p>Réservez en 3 étapes simples, sans paperasse</p>
     </div>
-    <div class="stat-card">
-      <i class="fas fa-map-marker-alt"></i>
-      <h3>2</h3>
-      <p>Villes couvertes</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Choisissez</h3>
+        <p>Parcourez notre catalogue de véhicules et hôtels disponibles</p>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Réservez</h3>
+        <p>Sélectionnez vos dates, vos infos sont pré-remplies automatiquement</p>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Payez</h3>
+        <p>MTN Mobile Money, Orange Money ou carte bancaire — vous choisissez</p>
+      </div>
     </div>
-    <div class="stat-card">
-      <i class="fas fa-star"></i>
-      <h3>100%</h3>
-      <p>Clients satisfaits</p>
+  </section>
+
+  <!-- CATALOGUE APERÇU -->
+  <section class="catalogue-section">
+    <div class="section-title">
+      <h2>Nos meilleures offres</h2>
+      <p>Sélection de véhicules et hôtels disponibles dès aujourd'hui</p>
+    </div>
+    <div class="catalogue-tabs">
+      <button class="tab-btn active" onclick="afficherOnglet('vehicules', this)">🚗 Véhicules</button>
+      <button class="tab-btn" onclick="afficherOnglet('hotels', this)">🏨 Hôtels</button>
+    </div>
+    <div class="catalogue-grid" id="catalogue-grid">
+      <div style="grid-column:1/-1;text-align:center;padding:2rem;color:#94a3b8;">
+        <i class="fas fa-spinner fa-spin"></i> Chargement...
+      </div>
+    </div>
+  </section>
+
+  <!-- MÉTHODES DE PAIEMENT -->
+  <section class="payment-section">
+    <h2>Paiements sécurisés</h2>
+    <p>Plusieurs méthodes acceptées pour votre confort</p>
+    <div class="payment-methods">
+      <div class="pay-method">
+        <i class="fas fa-mobile-alt mtn-color"></i>
+        <h4>MTN Mobile Money</h4>
+        <p>Paiement instantané depuis votre téléphone</p>
+      </div>
+      <div class="pay-method">
+        <i class="fas fa-mobile-alt orange-color"></i>
+        <h4>Orange Money</h4>
+        <p>Simple et rapide avec votre ligne Orange</p>
+      </div>
+      <div class="pay-method">
+        <i class="fab fa-stripe stripe-color"></i>
+        <h4>Carte bancaire</h4>
+        <p>Visa, Mastercard — paiement sécurisé par Stripe</p>
+      </div>
     </div>
   </section>
 
   <!-- FOOTER -->
-  <footer class="footer">
-    <p>© 2026 RentCloudy — Fait avec ❤️ par le mari de Providence</p>
+  <footer class="footer-new">
+    <div class="footer-logo">
+      <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+      Rent<strong style="color:white;">Cloudy</strong>
+    </div>
+    <div class="footer-links">
+      <a href="vehicules.html">Véhicules</a>
+      <a href="hotels.html">Hôtels</a>
+      <a href="connexion.html">Connexion</a>
+    </div>
+    <p style="font-size:0.82rem;">© 2026 RentCloudy — Fait avec ❤️ au Cameroun</p>
   </footer>
 
   <script src="js/auth.js"></script>
+  <script>
+    let typeActif = 'vehicules'
+
+    async function afficherOnglet(type, btn) {
+      typeActif = type
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'))
+      btn.classList.add('active')
+      await chargerCatalogue(type)
+    }
+
+    async function chargerCatalogue(type) {
+      const grid = document.getElementById('catalogue-grid')
+      grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:2rem;color:#94a3b8;"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>'
+      try {
+        const res = await fetch(`/api/${type}`)
+        const items = await res.json()
+        const unite = type === 'vehicules' ? 'jour' : 'nuit'
+        grid.innerHTML = items.slice(0, 4).map(item => `
+          <div class="cat-card">
+            <img src="images/${item.image}" alt="${item.nom}" onerror="this.src='images/placeholder.jpg'" />
+            <div class="cat-card-body">
+              <h3>${item.nom}</h3>
+              <div class="cat-card-price">${item.prix_par_jour.toLocaleString()} FCFA / ${unite}</div>
+              <a class="cat-card-btn" href="reservation.html?type=${type === 'vehicules' ? 'vehicule' : 'hotel'}&id=${item.id}&nom=${encodeURIComponent(item.nom)}&prix=${item.prix_par_jour}">
+                <i class="fas fa-calendar-check"></i> Réserver
+              </a>
+            </div>
+          </div>
+        `).join('')
+      } catch(e) {
+        grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:#ef4444;">Erreur de chargement</div>'
+      }
+    }
+
+    chargerCatalogue('vehicules')
+  </script>
 </body>
 </html>

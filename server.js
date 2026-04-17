@@ -1,3 +1,6 @@
+// Charge les variables d'environnement depuis le fichier .env
+try { require('dotenv').config() } catch(e) {}
+
 const express = require('express')
 const cors = require('cors')
 const path = require('path')
@@ -13,16 +16,14 @@ app.use(cors())
 app.use(express.json())
 app.use(express.static(path.join(__dirname, 'public')))
 
-// Page admin accessible via /admin (URL propre)
 app.get('/admin', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'admin.html'))
 })
 
-// Routes API
 app.use('/api', routes)
 app.use('/admin', adminRoutes)
 app.use('/client', clientRoutes)
 
 app.listen(PORT, () => {
-  console.log(`🚀 Serveur démarré sur http://localhost:${PORT}`)
+  console.log(`🚀 Serveur RentCloudy sur http://localhost:${PORT}`)
 })

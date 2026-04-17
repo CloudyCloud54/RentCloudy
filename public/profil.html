@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Mon Profil — RentCloudy</title>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .profil-page { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+    .profil-header {
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      border-radius: 20px; padding: 2.5rem; color: white;
+      display: flex; align-items: center; gap: 2rem; margin-bottom: 2rem;
+    }
+    .avatar-circle {
+      width: 90px; height: 90px; border-radius: 50%;
+      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2.5rem; color: white; flex-shrink: 0;
+      font-weight: 700;
+    }
+    .profil-header-info h2 { font-size: 1.5rem; font-weight: 700; }
+    .profil-header-info p { color: #94a3b8; margin-top: 0.25rem; }
+    .profil-header-info .badge {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      background: rgba(34,197,94,0.2); border: 1px solid rgba(34,197,94,0.4);
+      color: #86efac; padding: 0.25rem 0.75rem; border-radius: 50px;
+      font-size: 0.78rem; font-weight: 600; margin-top: 0.5rem;
+    }
+
+    .profil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; }
+    @media(max-width: 680px) { .profil-grid { grid-template-columns: 1fr; } }
+
+    .profil-card {
+      background: white; border-radius: 16px; padding: 1.75rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+    }
+    .profil-card h3 {
+      font-size: 1rem; font-weight: 700; color: #1e293b;
+      margin-bottom: 1.25rem; display: flex; align-items: center; gap: 0.5rem;
+    }
+    .profil-card h3 i { color: #3b82f6; }
+
+    .info-row {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 0.75rem 0; border-bottom: 1px solid #f1f5f9;
+    }
+    .info-row:last-child { border-bottom: none; }
+    .info-row i { width: 20px; color: #94a3b8; text-align: center; }
+    .info-row .label { font-size: 0.78rem; color: #94a3b8; }
+    .info-row .value { font-weight: 600; color: #1e293b; font-size: 0.95rem; }
+
+    .form-group { margin-bottom: 1rem; }
+    .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: #475569; margin-bottom: 0.4rem; }
+    .form-group input {
+      width: 100%; padding: 0.7rem 1rem; border: 1.5px solid #e2e8f0;
+      border-radius: 10px; font-family: 'Poppins', sans-serif; font-size: 0.92rem;
+      color: #1e293b; transition: border-color 0.2s; outline: none;
+    }
+    .form-group input:focus { border-color: #3b82f6; }
+
+    .btn-save {
+      width: 100%; padding: 0.85rem; background: linear-gradient(135deg, #3b82f6, #6366f1);
+      color: white; border: none; border-radius: 12px; font-family: 'Poppins', sans-serif;
+      font-size: 1rem; font-weight: 600; cursor: pointer; margin-top: 0.5rem;
+      transition: opacity 0.2s; display: flex; align-items: center; justify-content: center; gap: 0.5rem;
+    }
+    .btn-save:hover { opacity: 0.9; }
+
+    .success-msg {
+      background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534;
+      padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.88rem;
+      margin-top: 0.75rem; display: none;
+    }
+    .error-msg {
+      background: #fef2f2; border: 1px solid #fca5a5; color: #dc2626;
+      padding: 0.75rem 1rem; border-radius: 10px; font-size: 0.88rem;
+      margin-top: 0.75rem; display: none;
+    }
+
+    /* Réservations */
+    .reservations-card { grid-column: span 2; }
+    @media(max-width:680px) { .reservations-card { grid-column: span 1; } }
+
+    .resa-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: 1rem; border: 1px solid #f1f5f9; border-radius: 12px;
+      margin-bottom: 0.75rem; transition: box-shadow 0.2s;
+    }
+    .resa-item:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .resa-icon {
+      width: 48px; height: 48px; border-radius: 10px;
+      background: #eff6ff; display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; flex-shrink: 0;
+    }
+    .resa-info { flex: 1; }
+    .resa-info h4 { font-size: 0.95rem; font-weight: 600; color: #1e293b; }
+    .resa-info p { font-size: 0.8rem; color: #64748b; margin-top: 0.15rem; }
+    .resa-prix { font-weight: 700; color: #3b82f6; white-space: nowrap; }
+
+    .empty-state {
+      text-align: center; padding: 2rem; color: #94a3b8;
+    }
+    .empty-state i { font-size: 2.5rem; margin-bottom: 0.75rem; display: block; }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <div class="nav-logo">
+      <i class="fas fa-cloud" style="color:#3b82f6;"></i>
+      <span>Rent<strong>Cloudy</strong></span>
+    </div>
+    <ul class="nav-links">
+      <li><a href="index.html">Accueil</a></li>
+      <li><a href="vehicules.html">Véhicules</a></li>
+      <li><a href="hotels.html">Hôtels</a></li>
+      <ul id="nav-auth"></ul>
+    </ul>
+  </nav>
+
+  <div class="profil-page">
+
+    <!-- EN-TÊTE PROFIL -->
+    <div class="profil-header" id="profil-header">
+      <div class="avatar-circle" id="avatar-initiale">?</div>
+      <div class="profil-header-info">
+        <h2 id="profil-nom">Chargement...</h2>
+        <p id="profil-email">—</p>
+        <div class="badge"><i class="fas fa-check-circle"></i> Compte vérifié</div>
+      </div>
+    </div>
+
+    <div class="profil-grid">
+
+      <!-- INFOS -->
+      <div class="profil-card">
+        <h3><i class="fas fa-id-card"></i> Mes informations</h3>
+        <div class="info-row">
+          <i class="fas fa-user"></i>
+          <div>
+            <div class="label">Nom complet</div>
+            <div class="value" id="info-nom">—</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <i class="fas fa-envelope"></i>
+          <div>
+            <div class="label">Email</div>
+            <div class="value" id="info-email">—</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <i class="fas fa-phone"></i>
+          <div>
+            <div class="label">Téléphone</div>
+            <div class="value" id="info-tel">Non renseigné</div>
+          </div>
+        </div>
+        <div class="info-row">
+          <i class="fas fa-calendar"></i>
+          <div>
+            <div class="label">Membre depuis</div>
+            <div class="value" id="info-date">—</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODIFIER PROFIL -->
+      <div class="profil-card">
+        <h3><i class="fas fa-edit"></i> Modifier mon profil</h3>
+        <div class="form-group">
+          <label>Nom complet</label>
+          <input type="text" id="edit-nom" placeholder="Votre nom"/>
+        </div>
+        <div class="form-group">
+          <label>Téléphone (avec indicatif, ex: 237650000000)</label>
+          <input type="tel" id="edit-tel" placeholder="237650000000"/>
+        </div>
+        <div class="form-group">
+          <label>Nouveau mot de passe <span style="color:#94a3b8;font-weight:400;">(laisser vide pour ne pas changer)</span></label>
+          <input type="password" id="edit-pwd" placeholder="••••••••"/>
+        </div>
+        <button class="btn-save" onclick="sauvegarderProfil()">
+          <i class="fas fa-save"></i> Enregistrer
+        </button>
+        <div class="success-msg" id="save-success">✅ Profil mis à jour avec succès !</div>
+        <div class="error-msg" id="save-error"></div>
+      </div>
+
+      <!-- MES RÉSERVATIONS -->
+      <div class="profil-card reservations-card">
+        <h3><i class="fas fa-history"></i> Mes réservations</h3>
+        <div id="reservations-list">
+          <div class="empty-state"><i class="fas fa-spinner fa-spin"></i> Chargement...</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <footer style="text-align:center;padding:1.5rem;color:#94a3b8;font-size:0.85rem;margin-top:2rem;">
+    © 2026 RentCloudy
+  </footer>
+
+  <script src="js/auth.js"></script>
+  <script>
+    if (!localStorage.getItem('clientToken')) {
+      window.location.href = `connexion.html?redirect=${encodeURIComponent(window.location.href)}`
+    }
+
+    async function chargerProfil() {
+      try {
+        const res = await fetch('/client/profil', {
+          headers: { 'Authorization': localStorage.getItem('clientToken') }
+        })
+        const data = await res.json()
+        if (data.erreur) throw new Error(data.erreur)
+
+        // Avatar initiale
+        const initiale = data.nom ? data.nom[0].toUpperCase() : '?'
+        document.getElementById('avatar-initiale').textContent = initiale
+
+        document.getElementById('profil-nom').textContent = data.nom
+        document.getElementById('profil-email').textContent = data.email
+        document.getElementById('info-nom').textContent = data.nom
+        document.getElementById('info-email').textContent = data.email
+        document.getElementById('info-tel').textContent = data.telephone || 'Non renseigné'
+        document.getElementById('info-date').textContent = data.created_at
+          ? new Date(data.created_at).toLocaleDateString('fr-FR', { year:'numeric', month:'long', day:'numeric' })
+          : '—'
+
+        // Pré-remplir le formulaire d'édition
+        document.getElementById('edit-nom').value = data.nom || ''
+        document.getElementById('edit-tel').value = data.telephone || ''
+      } catch (err) {
+        console.error(err)
+      }
+    }
+
+    async function chargerReservations() {
+      const list = document.getElementById('reservations-list')
+      try {
+        const res = await fetch('/client/mes-reservations', {
+          headers: { 'Authorization': localStorage.getItem('clientToken') }
+        })
+        const data = await res.json()
+
+        if (!data.length) {
+          list.innerHTML = `
+            <div class="empty-state">
+              <i class="fas fa-calendar-times"></i>
+              <p>Aucune réservation pour l'instant</p>
+              <a href="vehicules.html" style="color:#3b82f6;font-weight:600;text-decoration:none;">Explorer les véhicules →</a>
+            </div>`
+          return
+        }
+
+        list.innerHTML = data.map(r => {
+          const debut = new Date(r.date_debut).toLocaleDateString('fr-FR', {day:'2-digit',month:'short'})
+          const fin = new Date(r.date_fin).toLocaleDateString('fr-FR', {day:'2-digit',month:'short',year:'numeric'})
+          const icon = r.type === 'vehicule' ? '🚗' : '🏨'
+          return `
+            <div class="resa-item">
+              <div class="resa-icon">${icon}</div>
+              <div class="resa-info">
+                <h4>${r.nom_item || r.item_id}</h4>
+                <p><i class="fas fa-calendar" style="font-size:0.75rem;"></i> ${debut} → ${fin}</p>
+              </div>
+              <div class="resa-prix">${Number(r.prix_total).toLocaleString()} FCFA</div>
+            </div>`
+        }).join('')
+      } catch (err) {
+        list.innerHTML = '<div class="empty-state"><i class="fas fa-exclamation-triangle"></i><p>Erreur de chargement</p></div>'
+      }
+    }
+
+    async function sauvegarderProfil() {
+      const nom = document.getElementById('edit-nom').value.trim()
+      const telephone = document.getElementById('edit-tel').value.trim()
+      const password = document.getElementById('edit-pwd').value
+
+      const success = document.getElementById('save-success')
+      const error = document.getElementById('save-error')
+      success.style.display = 'none'
+      error.style.display = 'none'
+
+      try {
+        const body = { nom, telephone }
+        if (password) body.password = password
+
+        const res = await fetch('/client/profil', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': localStorage.getItem('clientToken')
+          },
+          body: JSON.stringify(body)
+        })
+        const data = await res.json()
+
+        if (data.erreur) {
+          error.textContent = '❌ ' + data.erreur
+          error.style.display = 'block'
+        } else {
+          // Met à jour le nom en localStorage
+          localStorage.setItem('clientNom', nom)
+          success.style.display = 'block'
+          document.getElementById('edit-pwd').value = ''
+          chargerProfil()
+          setTimeout(() => success.style.display = 'none', 3000)
+        }
+      } catch (err) {
+        error.textContent = '❌ Erreur réseau'
+        error.style.display = 'block'
+      }
+    }
+
+    chargerProfil()
+    chargerReservations()
+  </script>
+</body>
+</html>
